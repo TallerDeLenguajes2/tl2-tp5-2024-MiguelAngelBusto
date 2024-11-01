@@ -46,7 +46,26 @@ namespace tp.Controllers
             return Ok(presupuesto);
         }
 
-        // Aquí podrías agregar más métodos para actualizar, eliminar, etc.
+        [HttpPost("{idPresupuesto}/{idProducto}/{cantidad}")]
+        public ActionResult AgregarDetalle(int idPresupuesto, int idProducto, int cantidad)
+        {
+            try
+            {
+                presupuestosRepository.AddProcutByID(idPresupuesto, idProducto, cantidad);
+                return CreatedAtAction(nameof(AgregarDetalle), new { idPresupuesto, idProducto });
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode(500, $"Error al agregar el presupuesto: {ex.Message}");
+            }
+        }
+
+        [HttpGet]
+        public ActionResult<List<Presupuestos>> ObtenerProductos()
+        {
+            List<Presupuestos> productos = presupuestosRepository.GetPresupuestos();
+            return Ok(productos);
+        }
     }
 }
 
